@@ -1174,11 +1174,13 @@ void Triangulation::verticalEdgeTagging(const double dotAngle)
 
  FOREACHEDGE(e, n){
   if (e->t1 != NULL && e->t2 != NULL){
-    Point n1 =  e->t1->getNormal();
-    Point n2 =  e->t2->getNormal();
-
+    Triangle *t1 = e->t1;
+    Triangle *t2 = e->t2;
+    Point n1 =  t1->getNormal();
+    Point n2 =  t2->getNormal();
+    
     if (!n1.isNull() && !n2.isNull() && up * n1 > dotAngle && up * n2 > dotAngle){
-    TAG_SHARPEDGE(e);
+        TAG_SHARPEDGE(e);
     //JMesh::warning("!");
     } else UNTAG_SHARPEDGE(e);
   }else UNTAG_SHARPEDGE(e);
@@ -1359,6 +1361,7 @@ bool Triangulation::iterativeEdgeSwaps()
  int swaps=1, totits=1;
  Point n1, n2, nor;
  List toswap;
+ Point up(0, 0, 1);
 
  bool selection=0;
  Triangle *t;
@@ -1386,7 +1389,7 @@ bool Triangulation::iterativeEdgeSwaps()
     l = e->delaunayMinAngle();
     if (e->swap())
     {
-     if (e->t1->isNeedle() || e->t2->isNeedle() || e->delaunayMinAngle() <= l*1.000001 || nor*e->t1->getNormal() <= 0 || nor*e->t2->getNormal() <= 0) e->swap(1);
+     if (e->t1->isNeedle() || e->t2->isNeedle() || e->delaunayMinAngle() <= l*1.000001 || nor*e->t1->getNormal() <= 0.5 || nor*e->t2->getNormal() <= 0.5 || up*e->t1->getNormal() < -0.05 || up*e->t2->getNormal() < -0.05 || e->t1->getNormal() * e->t2->getNormal() < 0.2) e->swap(1);
      else
      {
       swaps++;
