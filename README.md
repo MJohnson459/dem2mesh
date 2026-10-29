@@ -26,7 +26,18 @@ sudo apt-get install -y libgdal-dev libomp-dev
 mkdir build && cd build
 cmake ..
 make
-``` 
+```
+
+## Conda package
+
+`recipe.yaml` builds dem2mesh as a conda package. `variants.yaml` lists the GDAL minor versions it is built against.
+
+```bash
+pixi build --output-dir dist                                   # build for the current platform
+pixi exec rattler-build test -c conda-forge --package-file dist/*.conda   # run the recipe's test
+```
+
+Tags matching `v*` publish the package to the `mjohnson459/opendronemap` channel on prefix.dev through `.github/workflows/package.yml`. The workflow authenticates through the channel's Repository Access setting (GitHub OIDC), so no key is stored in the repository.
 
 ## Running
 
