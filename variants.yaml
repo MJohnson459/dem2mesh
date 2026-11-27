@@ -1,0 +1,6 @@
+# One build per GDAL minor: libgdal's soname changes with every minor release.
+# Each entry resolves to the newest patch release of that minor.
+libgdal-core:
+  - "3.11"
+  - "3.12"
+  - "3.13"
