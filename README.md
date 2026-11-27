@@ -23,9 +23,8 @@ sudo apt-get install -y libgdal-dev libomp-dev
 ## Building
 
 ```bash
-mkdir build && cd build
-cmake ..
-make
+cmake -S . -B build
+cmake --build build --parallel
 ```
 
 ## Conda package
@@ -42,7 +41,7 @@ Tags matching `v*` publish the package to the `mjohnson459/opendronemap` channel
 ## Running
 
 ```bash
-./dem2mesh -rtc -verbose -inputFile dem.tif -outputFile mesh.ply
+./build/dem2mesh -rtc -verbose -inputFile dem.tif -outputFile mesh.ply
 ```
 
 :warning: The DEM should use a coordinate reference system (CRS) that has matching horizontal and vertical units (for example, UTM). If you are getting stretched or deformed results, double check your CRS and use `gdalwarp` to reproject the raster DEM. https://www.gdal.org/gdalwarp.html
